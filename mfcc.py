@@ -12,6 +12,7 @@ from __future__ import print_function
 import wave
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 import scipy.signal
 
 
@@ -105,12 +106,10 @@ def mfcc(filename, nceps=12):
   ceps = np.array(ceps)
   #print(ceps)
   
-  """
   plt.plot(ceps, "o-")
   plt.xlim(-1, 13)
   plt.savefig("MFCC12.png")
-  plt.show()
-  """
+  #plt.show()
   
   return ceps
 
