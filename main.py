@@ -7,6 +7,9 @@ from __future__ import division
 
 import mfcc
 import sys
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 if __name__ == '__main__':
   
@@ -27,5 +30,19 @@ if __name__ == '__main__':
     quit()
 
   print(ceps)
+
+
+
+  """ Plot MFCC 
+  """
+  filename = args[1].rsplit(".", 1)	# abc/def.wav => abc/def, wav
+  filename = filename[0].rsplit("/", 1)	# abc/def => abc, def
+  plt.plot(ceps, "o-")
+  plt.xlim(-1, 12)
+  plt.savefig(filename[1]+".png")
+
+
+
+
 
 

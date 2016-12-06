@@ -8,11 +8,8 @@ Extract MFCC for sound.
 from __future__ import division
 from __future__ import print_function
 
-#import sys
 import wave
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 import scipy.signal
 
 
@@ -101,15 +98,9 @@ def mfcc(filename, nceps=12):
 
   mspec = np.array(np.log10(np.dot(spec, filterbank.T)))
 
-  #nceps = 12
   ceps = DCT(mspec ,nceps)
   ceps = np.array(ceps)
-  #print(ceps)
   
-  plt.plot(ceps, "o-")
-  plt.xlim(-1, 13)
-  plt.savefig("MFCC12.png")
-  #plt.show()
   
   return ceps
 
