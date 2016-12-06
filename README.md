@@ -9,11 +9,16 @@ ceps = [XXX, XXX, XXX, ... , XXX]
 
 ```
 
-同じディレクトリ内にMFCCをプロットしたグラフも生成されます．
+同じディレクトリ内にMFCCをプロットしたグラフも生成されます．  
+・test.wav から出力 test.png
+<img src="https://github.com/Hiroyuky/mfcc/blob/master/test.png" alt="MFCC12testPicture" title="test.png">  
+
 
 ## main.py
 
 ## mfcc.py
 
+## sound
+- test.wav
 
 
