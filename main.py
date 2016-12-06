@@ -38,7 +38,7 @@ if __name__ == '__main__':
   filename = args[1].rsplit(".", 1)	# abc/def.wav => abc/def, wav
   filename = filename[0].rsplit("/", 1)	# abc/def => abc, def
   plt.plot(ceps, "o-")
-  plt.xlim(-1, 12)
+  plt.xlim(-1, (len(ceps)+1))	# -1, cepsの最大値+1
   plt.savefig(filename[1]+".png")
 
 
