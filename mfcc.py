@@ -99,9 +99,7 @@ def mfcc(filename, nceps=12):
   mspec = np.array(np.log10(np.dot(spec, filterbank.T)))
 
   ceps = DCT(mspec ,nceps)
-  ceps = np.array(ceps)
-  
-  
+
   return ceps
 
 
