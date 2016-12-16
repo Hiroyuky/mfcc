@@ -11,7 +11,7 @@ from __future__ import print_function
 import wave
 import numpy as np
 import scipy.signal
-
+import functions as fn
 
 def input_wav(filename):
   """ wav データ　読み込み """
@@ -73,32 +73,67 @@ def mfcc(filename, nceps=12):
 
   # read wave file
   #filename = args[1]
-  wav, fs = input_wav(filename)
-  center = len(wav) / 2
-  cuttime = 0.04
-  wavdata = wav[int(center - (cuttime/2*fs)) : int(center + (cuttime/2*fs))]
-  
+  wavdata, fs = input_wav(filename)
+  #center = len(wav) / 2
+  #cuttime = 0.04
+  #wavdata = wav[int(center - (cuttime/2*fs)) : int(center + (cuttime/2*fs))]
+  # ステレオファイルをモノラル化します
+  x = fn.monauralize(wavdata)
+
+  nfft = 16 * 25 # フレーム: 16kHz - 25ms  [400 frame]
+  OVERLAP = nfft - (16 * 10) # 10ms
+  frame_length = len(wavdata)
+  time_song = float(frame_length) / fs
+  time_unit = 1 / float(fs)
+  print("Frame: ", nfft)
+  print("OverLap: ", OVERLAP)
+  print("length: ", frame_length)
+  print("波長の長さ(s): ", time_song)
+  print("1サンプルの長さ(s): ", time_unit)
+
+  start = (nfft / 2) * time_unit	# 中心時間 12.5[ms]
+  stop = time_song			# 終わり
+  step = (nfft - OVERLAP) * time_unit	# ずらした時間
+  time_ruler = np.arange(start, stop, step)
+
+
+  print("start: ", start)
+
   # PreEmphasis firter
   p = 0.97
   signal = preEmphasis(wavdata, p)
-  
+  #signal = preEmphasis(filename, p)
+  #fs = 16000
+
   # Hamming Window function
-  hammingWindow = np.hamming(len(signal))
-  signal = signal * hammingWindow
+  #hammingWindow = np.hamming(len(signal))
+  #signal = signal * hammingWindow
+  window = np.hamming(nfft)
+  #spec = np.zeros([len(time_ruler), 1 + (nfft / 2)])
+  pos = 0
 
-  # FFT
-  nfft = 2048
-  spec = np.abs(np.fft.fft(signal, nfft))[:int(nfft/2)]
-  fscale = np.fft.fftfreq(nfft, d=(1.0/fs))[:int(nfft/2)]
+  ceps = []
+  for mfcc_index in range(len(time_ruler)):
+    frame = x[pos:pos+nfft]
+    if len(frame) == nfft:
+      windowed = window * frame		# 窓掛け
+      # FFT
+      #nfft = 2048
+      spec = np.abs(np.fft.fft(windowed, nfft))[:int(nfft/2)]
+      fscale = np.fft.fftfreq(nfft, d=(1.0/fs))[:int(nfft/2)]
 
-  numChannels = 20
-  df = fs / nfft
+      numChannels = 20
+      df = fs / nfft
   
-  filterbank, fcenters = melFilterBank(fs, nfft, numChannels)
+      filterbank, fcenters = melFilterBank(fs, nfft, numChannels)
 
-  mspec = np.array(np.log10(np.dot(spec, filterbank.T)))
+      mspec = np.array(np.log10(np.dot(spec, filterbank.T)))
 
-  ceps = DCT(mspec ,nceps)
+      ceps.append(DCT(mspec ,nceps))
+      pos += (nfft -OVERLAP)
+  
+  print("cost frame: ", mfcc_index)
+  ceps = np.array(ceps)
 
   return ceps
 
