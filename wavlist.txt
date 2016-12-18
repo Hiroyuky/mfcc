@@ -1,2 +1,1 @@
-sound/test.wav
-sound/a.wav
+sound/000.wav
