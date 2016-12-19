@@ -12,7 +12,7 @@ out >>>
 同じディレクトリ内にMFCCをプロットしたグラフも生成されます(排除)．  
 ・test.wav から出力 test.png
 <div style="text-align: left;">
-<img src="https://github.com/Hiroyuky/mfcc/blob/master/test.png" alt="MFCC12testPicture" title="test.png" width="600px">  
+<img src="https://github.com/Hiroyuky/mfcc/blob/master/pic/image.png" alt="MFCC12testPicture" title="test.png" width="600px">  
 </div>
 
 ## main.py
